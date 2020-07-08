@@ -1,0 +1,9 @@
+AlienFX/.idea/
+Unity/AlienFX/.idea/
+Unity/AlienFX/Library/
+Unity/AlienFX/obj/
+AlienFX/AlienFX/bin/
+AlienFX/AlienFX/obj/
+Unity/AlienFX/Temp/
+*.csproj
+*.sln
