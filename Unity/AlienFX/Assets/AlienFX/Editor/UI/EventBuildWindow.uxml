@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
+    <ui:VisualElement style="width: 100%; height: 100%; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 3px; padding-right: 3px; padding-top: 3px; padding-bottom: 3px;">
+        <ui:TextField picking-mode="Ignore" label="NameSpace :" value="filler text" text="AlienFx.Event" name="NameSpace" tooltip="You don&apos;t need the &quot;.cs&quot; at the end!" style="height: auto; width: auto; padding-bottom: 0; display: none;" />
+        <ui:TextField picking-mode="Ignore" label="ScriptName :" value="filler text" text="AlienFxEvent" name="ScriptName" tooltip="You don&apos;t need the &quot;.cs&quot; at the end!" style="height: auto; width: auto; padding-bottom: 0;" />
+        <ui:TextField picking-mode="Ignore" label="BuildPath :" value="filler text" name="BuildPath" text="Assets\AlienFX" style="height: auto; width: auto; padding-bottom: 0; margin-bottom: 1px;" />
+        <ui:Button text="Build" name="Build" style="height: 50px; width: auto; -unity-font-style: normal; font-size: 13px;" />
+        <ui:Label text="If the program is not generated correctly, try changing it here." style="margin-left: 3px; color: rgb(199, 80, 80); -unity-font-style: bold;" />
+        <ui:Foldout text="Settings" value="false" focusable="false">
+            <ui:TextField picking-mode="Ignore" label="T4Path :" text="Assets\AlienFX\Editor" readonly="true" name="T4Path" />
+            <ui:TextField picking-mode="Ignore" label="TextTransformPath :" value="filler text" text="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\TextTransform.exe" name="TTPath" />
+        </ui:Foldout>
+    </ui:VisualElement>
+</ui:UXML>

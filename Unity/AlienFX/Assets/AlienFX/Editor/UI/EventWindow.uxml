@@ -1,0 +1,41 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
+    <ui:VisualElement name="EventElement" class="elem_outline" style="display: none; min-width: auto; min-height: auto;">
+        <Style src="EventElement.uss" />
+        <ui:VisualElement name="EventHeader" style="flex-direction: column; align-items: stretch; justify-content: space-between;">
+            <uie:EnumField value="Center">
+                <ui:Button text="x" style="margin-left: 5px; margin-right: 0; margin-top: 0; margin-bottom: 0;" />
+            </uie:EnumField>
+        </ui:VisualElement>
+        <ui:VisualElement name="EventFooter" class="elem_footer">
+            <ui:VisualElement name="AlienLight" class="elem_light">
+                <uie:MaskField />
+                <ui:VisualElement name="LightMask" class="LightMask">
+                    <uie:MaskField />
+                </ui:VisualElement>
+                <uie:MaskField />
+                <ui:Toggle label="UseAnimation :" name="EaseToggle" focusable="true" value="false" class="LightEase" />
+                <uie:CurveField />
+            </ui:VisualElement>
+            <ui:VisualElement name="AlienCodes" class="elem_code">
+                <ui:TextField picking-mode="Ignore" label="FunctionName" value="filler text" text="AlienFxEventN" name="FunctionName" />
+                <uie:EnumField label="Function" value="Func" name="Function" include-obsolete-values="false" />
+                <ui:VisualElement name="AlienFuncDesc" style="width: 100%; height: 100%;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="background" style="width: 100%; height: 100%; justify-content: space-between; padding-left: 7px; padding-right: 7px; padding-top: 7px; padding-bottom: 7px;">
+        <Style src="EventElement.uss" />
+        <ui:VisualElement name="header" style="align-items: flex-end; justify-content: space-between; flex-direction: row; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 5px; width: 100%;">
+            <ui:VisualElement name="texts" style="flex-direction: row; -unity-text-align: lower-left; -unity-font-style: italic; height: auto; width: 40%; justify-content: flex-start;">
+                <ui:Label text="AlienFX Event Builder" name="title" style="-unity-font-style: bold-and-italic; -unity-text-align: upper-left; font-size: 15px;" />
+                <ui:Label text="SDK Version: 5.2.2.0" name="sdkVersion" style="font-size: 11px; justify-content: flex-start; -unity-text-align: lower-left; -unity-slice-top: 0; -unity-slice-bottom: 0; -unity-background-scale-mode: stretch-to-fill; -unity-font-style: italic; padding-bottom: 2px; padding-left: 5px;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="buttons" style="align-items: stretch; flex-direction: row; justify-content: flex-end; height: auto; width: 60%;">
+                <uie:ObjectField name="loadAsset" style="width: 195px; justify-content: space-around; min-width: 10px;" />
+                <ui:Button text="Add Element" name="addElement" />
+                <ui:Button text="Build" name="build" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:ListView focusable="true" name="eventList" tabindex="0" binding-path="events.Array.data" style="height: 100%; background-color: rgba(0, 0, 0, 0.1); justify-content: space-between; align-items: stretch;" />
+    </ui:VisualElement>
+</ui:UXML>

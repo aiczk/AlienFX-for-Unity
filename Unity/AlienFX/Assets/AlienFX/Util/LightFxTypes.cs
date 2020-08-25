@@ -5,23 +5,23 @@
     /// </summary>
     public enum LfxDeviceType : ushort
     {
-        Unknown = 0x00,
+        Unknown  = 0x00,
         Notebook = 0x01,
-        Desktop = 0x02,
-        Server = 0x03,
-        Display = 0x04,
-        Mouse = 0x05,
+        Desktop  = 0x02,
+        Server   = 0x03,
+        Display  = 0x04,
+        Mouse    = 0x05,
         Keyboard = 0x06,
-        GamePad = 0x07,
-        Speaker = 0x08,
-        Custom = 0xFE,
-        Other = 0xFF
+        GamePad  = 0x07,
+        Speaker  = 0x08,
+        Custom   = 0xFE,
+        Other    = 0xFF
     }
     
     /// <summary>
     /// Return values
     /// </summary>
-    public enum LfxResult
+    public enum LfxResult : uint
     {
         /// <summary>
         /// Sucess
@@ -60,52 +60,52 @@
     public enum LfxLocationMask : uint
     {
         //Near Z-plane light definitions
-        FrontLowerLeft = 0x00000001,
+        FrontLowerLeft   = 0x00000001,
         FrontLowerCenter = 0x00000002,
-        FrontLowerRight = 0x00000004,
+        FrontLowerRight  = 0x00000004,
         
-        FrontMiddleLeft = 0x00000008,
+        FrontMiddleLeft   = 0x00000008,
         FrontMiddleCenter = 0x00000010,
-        FrontMiddleRight = 0x00000020,
+        FrontMiddleRight  = 0x00000020,
         
-        FrontUpperLeft = 0x00000040,
+        FrontUpperLeft   = 0x00000040,
         FrontUpperCenter = 0x00000080,
-        FrontUpperRight = 0x00000100,
+        FrontUpperRight  = 0x00000100,
         
         //Mid Z-plane light definitions
-        MiddleLowerLeft = 0x00000200,
+        MiddleLowerLeft   = 0x00000200,
         MiddleLowerCenter = 0x00000400,
-        MiddleLowerRight = 0x00000800,
+        MiddleLowerRight  = 0x00000800,
         
-        MiddleMiddleLeft = 0x00001000,
+        MiddleMiddleLeft   = 0x00001000,
         MiddleMiddleCenter = 0x00002000,
-        MiddleMiddleRight = 0x00004000,
+        MiddleMiddleRight  = 0x00004000,
         
-        MiddleUpperLeft = 0x00008000,
+        MiddleUpperLeft   = 0x00008000,
         MiddleUpperCenter = 0x00010000,
-        MiddleUpperRight = 0x00020000,
+        MiddleUpperRight  = 0x00020000,
         
         //Far Z-plane light definitions
-        RearLowerLeft = 0x00040000,
+        RearLowerLeft   = 0x00040000,
         RearLowerCenter = 0x00080000,
-        RearLowerRight = 0x00100000,
+        RearLowerRight  = 0x00100000,
         
-        RearMiddleLeft = 0x00200000,
+        RearMiddleLeft   = 0x00200000,
         RearMiddleCenter = 0x00400000,
-        RearMiddleRight = 0x00800000,
+        RearMiddleRight  = 0x00800000,
         
-        RearUpperLeft = 0x01000000,
+        RearUpperLeft      = 0x01000000,
         LfxRearUpperCenter = 0x02000000,
-        LfxRearUpperRight = 0x04000000,
+        LfxRearUpperRight  = 0x04000000,
         
         //Combination bit masks
-        All = 0x07FFFFFF,
+        All      = 0x07FFFFFF,
         AllRight = 0x04924924,
-        AllLeft = 0x01249249,
+        AllLeft  = 0x01249249,
         AllUpper = 0x070381C0,
         AllLower = 0x001C0E07,
         AllFront = 0x000001FF,
-        AllRear = 0x07FC0000
+        AllRear  = 0x07FC0000,
     }
 
     /// <summary>
@@ -113,16 +113,16 @@
     /// </summary>
     public enum LfxColorEncode : uint
     {
-        Off = 0x00000000,
-        Black = 0x00000000,
-        Red = 0x00FF0000,
-        Green = 0x0000FF00,
-        Blue = 0x000000FF,
-        White = 0x00FFFFFF,
+        Off    = 0x00000000,
+        Black  = 0x00000000,
+        Red    = 0x00FF0000,
+        Green  = 0x0000FF00,
+        Blue   = 0x000000FF,
+        White  = 0x00FFFFFF,
         Yellow = 0x00FFFF00,
         Orange = 0x00FF8000,
-        Pink = 0x00FF80FF,
-        Cyan = 0x0000FFFF
+        Pink   = 0x00FF80FF,
+        Cyan   = 0x0000FFFF
     }
     
     /// <summary>
@@ -132,7 +132,7 @@
     {
         Full = 0xFF000000,
         Half = 0x80000000,
-        Min = 0x00000000
+        Min  = 0x00000000
     }
 
     /// <summary>
@@ -142,7 +142,7 @@
     {
         Morph = 0x00000001,
         Pulse = 0x00000002,
-        LfxActionColor = 0x00000003,
+        Color = 0x00000003,
     }
     
     /// <summary>

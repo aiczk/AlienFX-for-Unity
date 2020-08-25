@@ -12,21 +12,7 @@ namespace AlienFX
             var lfx = new LightFx();
 
             var result = lfx.Initialize();
-            switch (result)
-            {
-                case LfxResult.Success:
-                    break;
-                case LfxResult.Failure:
-                    Console.WriteLine("Failed to load LightFX.dll.");
-                    return;
-                case LfxResult.ErrorNoDevs:
-                    Console.WriteLine("There is not AlienFX device available.");
-                    return;
-                default:
-                    Console.WriteLine("There was an error initializing the AlienFX device.");
-                    return;
-            }
-            
+
             var version = new StringBuilder(255);
             result = lfx.GetVersion(version);
             Console.WriteLine($"SDK Version: {version}");
@@ -34,6 +20,7 @@ namespace AlienFX
             result = lfx.GetNumDevices(out var numDevices);
             Console.WriteLine($"Devices: {numDevices.ToString()}");
 
+            lfx.Reset();
             for (uint devIndex = 0; devIndex < numDevices; devIndex++)
             {
                 var description = new StringBuilder(255);
@@ -50,6 +37,8 @@ namespace AlienFX
                     if(result != LfxResult.Success)
                         continue;
                     
+                    lfx.SetLightColor(devIndex, lightIndex, new LfxColor(0, 255, 0, 255));
+                    lfx.Update();
                     Console.WriteLine($"\tLight: {lightIndex.ToString()}\tDescription: {description}");
                 }
             }
@@ -57,15 +46,15 @@ namespace AlienFX
             Thread.Sleep(1000);
             lfx.Reset();
             
-            for (var i = 0; i <= 0; i++)
-            {
-                var color = LfxColorEncode.Orange.Brightness(LfxBrightness.Full);
-                //lfx.Light(LfxLocationMask.All, new LfxColor(0, 255, 0, 255));
-                lfx.Light(LfxLocationMask.All, color);
-                lfx.Update();
-                Console.WriteLine($"Color: {color:X}");
-                Thread.Sleep(100);
-            }
+             for (var i = 0; i <= 0; i++)
+             {
+                 var color = LfxColorEncode.Orange.Brightness(LfxBrightness.Full);
+                 //lfx.Light(LfxLocationMask.All, new LfxColor(0, 255, 0, 255));
+                 lfx.Light(LfxLocationMask.All, color);
+                 lfx.Update();
+                 Console.WriteLine($"Color: {color:X}");
+                 Thread.Sleep(100);
+             }
 
             Console.WriteLine("Done.\r\n\r\nPress any key to finish ...");
             Console.ReadKey();

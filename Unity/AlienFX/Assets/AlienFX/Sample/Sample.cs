@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Globalization;
 using System.Text;
 using System.Threading;
+using AlienFX.Easing;
 using AlienFX.Util;
 using UnityEngine;
 
@@ -13,21 +15,7 @@ namespace AlienFX
             var lfx = new LightFx();
 
             var result = lfx.Initialize();
-            switch (result)
-            {
-                case LfxResult.Success:
-                    break;
-                case LfxResult.Failure:
-                    Debug.LogError("Failed to load LightFX.dll.");
-                    return;
-                case LfxResult.ErrorNoDevs:
-                    Debug.LogError("There is not AlienFX device available.");
-                    return;
-                default:
-                    Debug.LogError("There was an error initializing the AlienFX device.");
-                    return;
-            }
-            
+
             var version = new StringBuilder(255);
             result = lfx.GetVersion(version);
             Debug.Log($"SDK Version: {version}");
@@ -57,7 +45,7 @@ namespace AlienFX
             
             Thread.Sleep(1000);
             lfx.Reset();
-            
+
             for (var i = 0; i <= 0; i++)
             {
                 var color = LfxColorEncode.Orange.Brightness(LfxBrightness.Full);

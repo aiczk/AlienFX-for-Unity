@@ -5,7 +5,7 @@ using AlienFX.Util;
 
 namespace AlienFX
 {
-    public class LightFx : IDisposable
+    public class LightFx
     {
         private static class Functions
         {
@@ -46,15 +46,40 @@ namespace AlienFX
         /// will return LFX_ERROR_NOINIT or LFX_FAILURE.
         /// </summary>
         /// <returns></returns>
-        public LfxResult Initialize() => unManagedDll.GetProcAddress<Functions.LFX_Initialize>()();
-        
+        public LfxResult Initialize()
+        {
+            var result = unManagedDll.GetProcAddress<Functions.LFX_Initialize>()();
+            
+            switch (result)
+            {
+                case LfxResult.Success:
+                    break;
+                case LfxResult.Failure:
+                    Console.WriteLine("Failed to load LightFX.dll.");
+                    return result;
+                case LfxResult.ErrorNoDevs:
+                    Console.WriteLine("There is not AlienFX device available.");
+                    return result;
+                default:
+                    Console.WriteLine("There was an error initializing the AlienFX device.");
+                    return result;
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// This function releases the Alienware AlienFX system, freeing memory and restores the system to its initial state.
         /// It may be called when the system is no longer needed.
         /// </summary>
         /// <returns></returns>
-        public LfxResult Release() => unManagedDll.GetProcAddress<Functions.LFX_Release>()();
-        
+        public LfxResult Release()
+        {
+            var result = unManagedDll.GetProcAddress<Functions.LFX_Release>()();
+            unManagedDll?.Dispose();
+            return result;
+        }
+
         /// <summary>
         /// This function sets all lights in the Alienware AlienFX system to ‘off’ or uncolored state.
         /// It must be noted that the change(s) to the physical light(s) does not occur immediately.
@@ -143,6 +168,18 @@ namespace AlienFX
         /// <returns></returns>
         public LfxResult SetLightColor(uint devIndex, uint lightIndex, LfxColor lightCol) =>
             unManagedDll.GetProcAddress<Functions.LFX_SetLightColor>()(devIndex, lightIndex, lightCol);
+        
+        /// <summary>
+        /// This function submits a light command into the command queue, which sets the current color of any light within the provided location mask to the provided color setting.
+        /// Similar to LFX_SetLightColor, these settings are changed in the active state and must be submitted with a call to LFX_Update.
+        /// Location mask is a 32-bit field, where each of the first 27 bits represents a zone in the virtual cube representing the system.
+        /// The color is packed into a 32-bit value as ARGB, with the alpha value corresponding to brightness. 
+        /// </summary>
+        /// <param name="locationMask">32-bit location mask. See the defined values in LfxLocationMask.</param>
+        /// <param name="lightCol">32-bit color value</param>
+        /// <returns></returns>
+        public LfxResult Light(LfxLocationMask locationMask, uint lightCol) =>
+            unManagedDll.GetProcAddress<Functions.LFX_Light>()(locationMask, lightCol);
         
         /// <summary>
         /// This function submits a light command into the command queue, which sets the current color of any light within the provided location mask to the provided color setting.
@@ -262,80 +299,8 @@ namespace AlienFX
         /// <returns></returns>
         public LfxResult GetVersion(StringBuilder version) =>
             unManagedDll.GetProcAddress<Functions.LFX_GetVersion>()(version, version.Capacity);
-        
-        private static uint ConvertToUint(LfxColor color) => 
-            (uint)(((color.brightness << 24) | (color.red << 16) | (color.green << 8) | color.blue) & 0xffffffffL);
 
-        public void Dispose() => unManagedDll?.Dispose();
-        
-        
-#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
-        /// <summary>
-        /// This function submits a light command into the command queue, which sets the current color of any light within the provided location mask to the provided color setting.
-        /// Similar to LFX_SetLightColor, these settings are changed in the active state and must be submitted with a call to LFX_Update.
-        /// Location mask is a 32-bit field, where each of the first 27 bits represents a zone in the virtual cube representing the system.
-        /// The color is packed into a 32-bit value as ARGB, with the alpha value corresponding to brightness.
-        /// </summary>
-        /// <param name="locationMask">32-bit location mask. See the defined values in LfxLocationMask.</param>
-        /// <param name="lightCol">32-bit color value</param>
-        /// <returns></returns>
-        public LfxResult Light(LfxLocationMask locationMask, UnityEngine.Color lightCol) =>
-            unManagedDll.GetProcAddress<Functions.LFX_Light>()(locationMask, ConvertToUint(lightCol));
-
-        /// <summary>
-        /// This function sets the primary color and an action type for any devices with lights in a location.
-        /// It changes the current primary color and action type stored in the active state since the last LFX_Reset() call.
-        /// It does NOT immediately update the physical light settings, but instead requires a call to LFX_Update().
-        /// If the action type is a morph, then the secondary color for the action is black. Location mask is a 32-bit field, where each of the first 27 bits represents a zone in the virtual cube representing the system.
-        /// The color is packed into a 32-bit value as ARGB, with the alpha value corresponding to brightness.
-        /// </summary>
-        /// <param name="locationMask">32-bit location mask. See the defined values in LocationMask</param>
-        /// <param name="actionType">Action type</param>
-        /// <param name="primaryColor">32-bit color value</param>
-        /// <returns></returns>
-        public LfxResult ActionColor(LfxLocationMask locationMask, LfxActionType actionType, UnityEngine.Color primaryColor) =>
-            unManagedDll.GetProcAddress<Functions.LFX_ActionColor>()(locationMask, actionType, ConvertToUint(primaryColor));
-
-        /// <summary>
-        /// This function sets the primary and secondary color and an action type for any devices with lights in a location.
-        /// It changes the current primary and secondary color and action type stored in the active state since the last LFX_Reset() call.
-        /// It does NOT immediately update the physical light settings, but instead requires a call to LFX_Update.
-        /// If the action type is not a morph, then the secondary color is ignored. Location mask is a 32-bit field, where each of the first 27 bits represents a zone in the virtual cube representing the system.
-        /// The color is packed into a 32-bit value as ARGB, with the alpha value corresponding to brightness.
-        /// </summary>
-        /// <param name="locationMask">32-bit location mask. See the defined values in LocationMask</param>
-        /// <param name="actionType">Action type</param>
-        /// <param name="primaryColor">32-bit color value</param>
-        /// <param name="secondaryColor">32-bit secondary color value</param>
-        /// <returns></returns>
-        public LfxResult ActionColorEx(LfxLocationMask locationMask, LfxActionType actionType, UnityEngine.Color primaryColor, UnityEngine.Color secondaryColor) =>
-            unManagedDll.GetProcAddress<Functions.LFX_ActionColorEx>()(locationMask, actionType, ConvertToUint(primaryColor), ConvertToUint(secondaryColor));
-
-        /// <summary>
-        /// This function sets the primary color and an action type to a light.
-        /// It changes the current color and action type stored in the active state since the last LFX_Reset() call.
-        /// It does NOT immediately update the physical light settings, but instead requires a call to LFX_Update().
-        /// If the action type is a morph, then the secondary color for the action is black.
-        /// </summary>
-        /// <param name="devIndex">Index to the target device</param>
-        /// <param name="lightIndex">Index to the target light</param>
-        /// <param name="actionType">Action type</param>
-        /// <param name="primaryColor">Pointer to an LFX_COLOR structure with the desired color</param>
-        /// <returns></returns>
-        public LfxResult SetLightActionColor(uint devIndex, uint lightIndex, LfxActionType actionType, UnityEngine.Color primaryColor) =>
-            unManagedDll.GetProcAddress<Functions.LFX_SetLightActionColor>()(devIndex, lightIndex, actionType, ConvertToLfxColor(primaryColor));
-        
-        private static uint ConvertToUint(UnityEngine.Color color)
-        {
-            UnityEngine.Color32 col = color; 
-            return (uint) (((col.a << 24) | (col.r << 16) | (col.g << 8) | col.b) & 0xffffffffL);
-        }
-        
-        private static LfxColor ConvertToLfxColor(UnityEngine.Color color)
-        {
-            UnityEngine.Color32 col = color; 
-            return new LfxColor(col.r, col.g, col.b, col.a);
-        }
-#endif
+        private static uint ConvertToUint(LfxColor color) =>
+            (uint) (((color.brightness << 24) | (color.red << 16) | (color.green << 8) | color.blue) & 0xffffffffL);
     }
 }
